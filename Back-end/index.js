@@ -1,0 +1,35 @@
+const pool = require('./config/database');// IMPORT IMPORTANT : On récupère le pool
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.send('API Todo List est en ligne !');});
+
+
+const registerRoutes = require('./routes/registerRoutes')
+
+// --- TEST DE CONNEXION AU DÉMARRAGE ---
+
+
+app.listen(PORT, async () => {// On force le serveur à dire "Bonjour" à PostgreSQL dès qu'il s'allume
+    console.log(`Serveur démarré sur le port ${PORT}`);
+
+    try {
+        // On fait une requête simple (SELECT NOW) pour vérifier la connexion
+        await pool.query('SELECT NOW()');
+        // Le message "✅ Connexion à la BDD réussie !" viendra du fichier database.js
+        // grâce à l'événement pool.on('connect')
+
+    } catch (error) {
+        console.error('❌ Échec de connexion à la BDD :', error.message);
+        process.exit(1);  // Si la BDD ne marche pas, on arrête le serveur, car l'API ne sert à rien sans elle
+    }
+});
+
+
