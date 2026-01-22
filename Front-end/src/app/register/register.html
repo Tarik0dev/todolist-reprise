@@ -5,30 +5,70 @@
         </div>
         <h2>Crée un compte</h2>
         <h3>Commencez à organiser vos tâches dès aujourd'hui</h3>
-        <form [formGroup]="registerForm" (ngSubmit)="OnSubmit()">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="group-input">
-                <label for="firstName">Prénom: </label>
+                <label for="firstName">Prénom*: </label>
                 <input id="firstName" type="text" formControlName="firstName" />
             </div>
-            <div class="group-input"> <label for="lastName">Nom de famille: </label>
+            <small class="error" [class.visible]="
+      registerForm.controls.firstName.invalid &&
+      (registerForm.controls.firstName.dirty ||
+       registerForm.controls.firstName.touched)
+    ">
+                Veuillez saisir votre prénom
+            </small>
+            <div class="group-input"> <label for="lastName">Nom de famille*: </label>
                 <input id="lastName" type="text" formControlName="lastName" />
-                @if (registerForm.get('lastName')?.hasError('required') && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)) {
-                <small>Veuillez saisir votre Nom de famille</small>
-                }
-            </div>
 
-            <div class="group-input"> <label for="email">Adresse mail: </label>
+
+
+            </div>
+            <small class="error" [class.visible]="
+      registerForm.controls.lastName.invalid &&
+      (registerForm.controls.lastName.dirty ||
+       registerForm.controls.lastName.touched)
+    ">
+                Veuillez saisir votre nom de famille
+            </small>
+
+            <div class="group-input"> <label for="email">Adresse mail*: </label>
                 <input id="email" type="email" formControlName="email" />
             </div>
+            <small class="error" [class.visible]="
+      registerForm.controls.email.invalid &&
+      (registerForm.controls.email.dirty ||
+       registerForm.controls.email.touched)
+    ">
+                Veuillez saisir votre adresse mail
+            </small>
             <div class="group-input">
-                <label for="password">Definissez votre mot de passe: </label>
+                <label for="password">Definissez votre mot de passe*: </label>
                 <input id="password" type="password" formControlName="password" />
             </div>
-            <div class="group-input"><label for="confirmPassword">Confirmez votre mot de passe: </label>
+            <small class="error" [class.visible]="
+      registerForm.controls.password.invalid &&
+      (registerForm.controls.password.dirty ||
+       registerForm.controls.password.touched)
+    ">
+                Veuillez saisir un mot de passe
+            </small>
+            <div class="group-input"><label for="confirmPassword">Confirmez votre mot de passe*: </label>
                 <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+                @if (registerForm.get('confirmPassword')?.value !== registerForm.get('password')?.value) {
+                <small class="error" [class.visible]="
+      registerForm.controls.confirmPassword.invalid &&
+      (registerForm.controls.confirmPassword.dirty ||
+       registerForm.controls.confirmPassword.touched)"
+
+
+    >
+                    mot de passe différent
+                </small>
+                }
             </div>
             <button type="submit">Envoyer</button>
+            <small><i>* Champs obligatoires</i></small>
         </form>
     </div>
-
+<p>déjà inscrit ? <a href="">se connecter</a></p>
 </div>

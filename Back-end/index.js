@@ -13,6 +13,7 @@ app.get('/', (req, res) => {
 
 
 const registerRoutes = require('./routes/registerRoutes')
+app.use('/register', registerRoutes)
 
 // --- TEST DE CONNEXION AU DÉMARRAGE ---
 
