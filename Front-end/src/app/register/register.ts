@@ -1,18 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
-import { Api } from '../services/api.service';
-import { RegisterInterface } from '../models/register.interface';
+import { RouterLink } from "@angular/router";
+import { AuthenticationService } from '../services/authentication.service';
+import { RegisterRequestInterface } from '../models/request/authenticationRequest.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class RegisterForm {
 
-  private apiService = inject(Api)
-  
+  private authenticationService = inject(AuthenticationService)
+  private router = inject(Router)
+
   registerForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl(null, [Validators.required]),
@@ -31,11 +34,11 @@ export class RegisterForm {
     const passwordsOk = this.passwordsMatch();
 
     if (this.registerForm.valid && passwordsOk) {
-      
+
       const valeurs = this.registerForm.value;
 
       // Décortiquons le NOUVEAU colis
-      const colisPourApi: RegisterInterface = {
+      const colisPourApi: RegisterRequestInterface = {
         // C'est beaucoup plus direct maintenant :
         firstName: valeurs.firstName || '', // On prend le prénom
         lastName: valeurs.lastName || '',   // On prend le nom
@@ -44,9 +47,10 @@ export class RegisterForm {
       };
 
       // On envoie le colis
-      this.apiService.postRegister(colisPourApi).subscribe({
+      this.authenticationService.register(colisPourApi).subscribe({
         next: (reponse) => {
-          console.log('Succès !', reponse);
+          alert(reponse.message);
+          this.router.navigate(['/'])
         },
         error: (erreur) => {
           console.error('Erreur :', erreur);

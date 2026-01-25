@@ -55,8 +55,8 @@ gap: 2px
 }
 
 button { border: none;padding: 5px;color: var(--blue-dark);}
-.button:hover {cursor: pointer;}
-.button:active {background-color: black;}
+button:hover {cursor: pointer;}
+button:active {background-color: black;}
 
 .invalid-form{ opacity: 0.6;}
 

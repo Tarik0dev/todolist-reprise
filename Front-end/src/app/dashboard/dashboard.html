@@ -1,0 +1,226 @@
+<div class="dashboard-container">
+  
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+         <img src="logo.png" alt="logo" class="logo-icon">
+      <h2>TaskFlow</h2>
+    </div>
+
+    <nav class="nav-menu">
+      <a href="#" class="nav-item active">
+        <span class="nav-icon">🏠</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">📋</span>
+        <span>Mes Tâches</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">⭐</span>
+        <span>Importantes</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">✅</span>
+        <span>Complétées</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">🗑️</span>
+        <span>Corbeille</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="avatar">JD</div>
+        <div class="user-info">
+          <span class="user-name">nom utilisateur</span>
+          <span class="user-email"></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <h1>Bonjour, Jean 👋</h1>
+        <p class="date">Mardi 15 Janvier 2025</p>
+      </div>
+      <div class="header-right">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Rechercher une tâche...">
+        </div>
+        <button class="btn-notification">
+          🔔
+          <span class="notification-badge">3</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- STATISTICS CARDS -->
+    <section class="stats-container">
+      <div class="stat-card stat-total">
+        <div class="stat-icon">📋</div>
+        <div class="stat-info">
+          <span class="stat-number">24</span>
+          <span class="stat-label">Total Tâches</span>
+        </div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-info">
+          <span class="stat-number">12</span>
+          <span class="stat-label">En Cours</span>
+        </div>
+      </div>
+      <div class="stat-card stat-completed">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <span class="stat-number">8</span>
+          <span class="stat-label">Complétées</span>
+        </div>
+      </div>
+      <div class="stat-card stat-urgent">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-info">
+          <span class="stat-number">4</span>
+          <span class="stat-label">Urgentes</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADD TASK FORM -->
+    <section class="add-task-section">
+      <form class="add-task-form">
+        <input type="text" placeholder="Ajouter une nouvelle tâche..." class="task-input">
+        <select class="priority-select">
+          <option value="low">🟢 Basse</option>
+          <option value="medium">🟡 Moyenne</option>
+          <option value="high">🔴 Haute</option>
+        </select>
+        <input type="date" class="date-input">
+        <button type="submit" class="btn-add">
+          + Ajouter
+        </button>
+      </form>
+    </section>
+
+    <!-- TASKS LIST -->
+    <section class="tasks-section">
+      <div class="tasks-header">
+        <h2>Mes Tâches</h2>
+        <div class="filter-buttons">
+          <button class="filter-btn active">Toutes</button>
+          <button class="filter-btn">Actives</button>
+          <button class="filter-btn">Complétées</button>
+        </div>
+      </div>
+
+      <div class="tasks-list">
+        
+        <!-- Task Item - Urgent -->
+        <div class="task-item priority-high">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <h3 class="task-title">Terminer le projet Angular DWWM</h3>
+            <div class="task-meta">
+              <span class="task-category">💼 Travail</span>
+              <span class="task-date">📅 Aujourd'hui</span>
+            </div>
+          </div>
+          <div class="task-actions">
+            <button class="btn-icon btn-edit">✏️</button>
+            <button class="btn-icon btn-delete">🗑️</button>
+          </div>
+        </div>
+
+        <!-- Task Item - Medium -->
+        <div class="task-item priority-medium">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <h3 class="task-title">Réviser les concepts de Routing</h3>
+            <div class="task-meta">
+              <span class="task-category">📚 Études</span>
+              <span class="task-date">📅 Demain</span>
+            </div>
+          </div>
+          <div class="task-actions">
+            <button class="btn-icon btn-edit">✏️</button>
+            <button class="btn-icon btn-delete">🗑️</button>
+          </div>
+        </div>
+
+        <!-- Task Item - Low -->
+        <div class="task-item priority-low">
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <h3 class="task-title">Acheter des fournitures de bureau</h3>
+            <div class="task-meta">
+              <span class="task-category">🏠 Personnel</span>
+              <span class="task-date">📅 20 Jan</span>
+            </div>
+          </div>
+          <div class="task-actions">
+            <button class="btn-icon btn-edit">✏️</button>
+            <button class="btn-icon btn-delete">🗑️</button>
+          </div>
+        </div>
+
+        <!-- Task Item - Completed -->
+        <div class="task-item completed">
+          <label class="checkbox-container">
+            <input type="checkbox" checked>
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <h3 class="task-title">Configurer l'environnement de développement</h3>
+            <div class="task-meta">
+              <span class="task-category">💼 Travail</span>
+              <span class="task-date">📅 Terminé</span>
+            </div>
+          </div>
+          <div class="task-actions">
+            <button class="btn-icon btn-edit">✏️</button>
+            <button class="btn-icon btn-delete">🗑️</button>
+          </div>
+        </div>
+
+        <!-- Task Item - Completed -->
+        <div class="task-item completed">
+          <label class="checkbox-container">
+            <input type="checkbox" checked>
+            <span class="checkmark"></span>
+          </label>
+          <div class="task-content">
+            <h3 class="task-title">Créer le formulaire d'inscription</h3>
+            <div class="task-meta">
+              <span class="task-category">💼 Travail</span>
+              <span class="task-date">📅 Terminé</span>
+            </div>
+          </div>
+          <div class="task-actions">
+            <button class="btn-icon btn-edit">✏️</button>
+            <button class="btn-icon btn-delete">🗑️</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+</div>
