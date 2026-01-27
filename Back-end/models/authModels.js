@@ -9,13 +9,14 @@ const authModel = {
 
     return result.rows[0]; // undefined si pas trouvé
   },
-  saveResetToken: async (email, token, expires) => {
+  resetPassword: async (email, password) => {
         await pool.query(`
             UPDATE users
-            SET reset_token = $1, reset_token_expires = $2
-            WHERE email = $3
-        `, [token, expires, email]);
+            SET password = $1
+            WHERE email = $2
+        `, [password, email]);
     },
+  
 };
 
 module.exports = authModel;

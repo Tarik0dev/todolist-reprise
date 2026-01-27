@@ -21,7 +21,7 @@ const forgotPasswordController = {
 
             console.log("2. Utilisateur trouvé :", user.id);
             
-            const secret = process.env.JWT_SECRET + user.password;
+            const secret = process.env.RESET_PASSWORD_SECRET;
             const token = jwt.sign({email}, secret, {expiresIn: '1h'})
 
             // 5. Envoi de l'email

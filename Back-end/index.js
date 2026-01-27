@@ -9,17 +9,15 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('API Todo List est en ligne !');});
+res.send('API Todo List est en ligne !');});
 
-
-const registerRoutes = require('./routes/registerRoutes')
-app.use('/register', registerRoutes)
 
 const authRoutes = require('./routes/authRoutes')
 app.use('/auth', authRoutes)
 
-const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes')
-app.use('/forgot-password', forgotPasswordRoutes)
+const passwordRoutes = require('./routes/passwordRoutes')
+app.use('/password', passwordRoutes)
+
 // --- TEST DE CONNEXION AU DÉMARRAGE ---
 
 
