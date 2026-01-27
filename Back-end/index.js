@@ -1,4 +1,4 @@
-const pool = require('./config/database');// IMPORT IMPORTANT : On récupère le pool
+const pool = require('./config/configDatabase');// IMPORT IMPORTANT : On récupère le pool
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
 const registerRoutes = require('./routes/registerRoutes')
 app.use('/register', registerRoutes)
 
+const authRoutes = require('./routes/authRoutes')
+app.use('/auth', authRoutes)
+
+const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes')
+app.use('/forgot-password', forgotPasswordRoutes)
 // --- TEST DE CONNEXION AU DÉMARRAGE ---
 
 

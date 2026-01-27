@@ -8,7 +8,7 @@ const registerController =  {
             const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = await registerModel.create({ firstName, lastName, email, password: hashedPassword });
 
-            res.status(201).json("L'inscription à été réalisé avec succés !")
+            res.status(201).json({message: "L'inscription à été réalisé avec succés bravo !!!"})
         }
         catch (error) {
             if (error.code === '23505') {
