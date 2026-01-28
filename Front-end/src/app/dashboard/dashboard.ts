@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,4 +9,10 @@ import { Component } from '@angular/core';
 })
 export class Dashboard {
 
+  private router = inject(Router);
+
+  signOut(): void {
+    localStorage.removeItem("token");
+    this.router.navigate(['/'])
+  }
 }

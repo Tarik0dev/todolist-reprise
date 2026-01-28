@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from "@angular/router";
 import { AuthenticationService } from '../services/authentication.service';
@@ -11,10 +11,16 @@ import { Router } from '@angular/router';
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class RegisterForm {
+export class RegisterForm implements OnInit {
 
   private authenticationService = inject(AuthenticationService)
   private router = inject(Router)
+
+  ngOnInit(): void {
+    if (localStorage.getItem("token")) {
+       this.router.navigate(['/dashboard']);
+    }
+  } 
 
   registerForm = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
