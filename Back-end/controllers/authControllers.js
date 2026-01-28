@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const authModel = require('../models/authModels');
 const jwt = require('jsonwebtoken')
+const registerModel = require('../models/registerModels')
 
 const authController = {
   login: async (req, res) => {
@@ -43,7 +44,7 @@ const authController = {
       res.status(500).json({ error: 'Erreur serveur' });
     }
   },
-  register: async (req,res) => { 
+  register: async (req,res) => {
         try {
             const { firstName, lastName, email, password } = req.body
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -59,10 +60,9 @@ const authController = {
       }
             console.error('erreur : ', error);
             res.status(500).json({ error: error.message });
-            
-            
-    }
 
+
+    }
     }
 };
 
