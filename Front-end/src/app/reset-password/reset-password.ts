@@ -1,12 +1,8 @@
-import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-  AbstractControl
-} from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
+import { ResetPasswordRequestInterface } from '../models/request/forgotPasswordRequest.interface';
 
 @Component({
   selector: 'app-reset-password',
@@ -15,45 +11,61 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.css',
 })
-export class ResetPassword {
+export class ResetPassword implements OnInit {
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  authenticationService = inject(AuthenticationService)
 
-  token!: string;
+  private token!: string;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.token = this.route.snapshot.paramMap.get('token')!;
+  ngOnInit() {
+    this.token = this.route.snapshot.params['token'];
+    console.log(this.token);
+    if (!this.token) {
+       this.router.navigate(['/']);
+    }
   }
 
-  resetForm = new FormGroup(
-    {
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-      ]),
-      confirmPassword: new FormControl('', [
-        Validators.required,
-      ]),
-    },
-    { validators: this.passwordMatchValidator }
-  );
+  resetForm = new FormGroup({
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
+    ]),
+    confirmPassword: new FormControl('', [Validators.required]),
+  });
 
-  passwordMatchValidator(control: AbstractControl) {
-    const password = control.get('password')?.value;
-    const confirm = control.get('confirmPassword')?.value;
-    return password === confirm ? null : { passwordMismatch: true };
+ isMatch() : boolean {
+  if ( this.resetForm.get('password')?.value ===  this.resetForm.get('confirmPassword')?.value ){
+
+    return true
   }
-
+  return false
+ }
   onSubmit() {
-    if (this.resetForm.valid) {
-      console.log('Nouveau mot de passe :', this.resetForm.value);
-      console.log('Token :', this.token);
+    if (this.resetForm.valid && this.isMatch()) {
 
-      // Plus tard :
-      // this.authService.resetPassword(this.token, this.resetForm.value)
+      // const newPassword = {token}
+      
+      const data: ResetPasswordRequestInterface = {
+        token: this.token,
+        password: this.resetForm.get('password')?.value as string
+      }
 
-      this.router.navigate(['/login']);
+      this.authenticationService.resetPassword(data).subscribe({
+        next: (response) => {
+          alert(response.message);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
+
+
+
+      alert('Votre mot de passe à été réinitialisé avec succés !');
+
+      this.router.navigate(['/dashboard']);
     }
   }
 }

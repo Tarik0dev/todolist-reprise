@@ -27,7 +27,7 @@ export const routes: Routes = [
     title: 'TaskFlow',
   },
    {
-    path: 'reset-password',
+    path: 'reset-password/:token',
     component: ResetPassword ,
     title: 'TaskFlow',
   },

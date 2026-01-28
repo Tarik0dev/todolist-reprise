@@ -12,43 +12,34 @@ import { ForgotPasswordRequest } from '../models/request/forgotPasswordRequest.i
   styleUrl: './forgot-password.css',
 })
 export class ForgotPassword {
-  private api = inject(AuthenticationService)
-  private router = inject(Router)
-
-  
+  private api = inject(AuthenticationService);
+  private router = inject(Router);
 
   forgotForm = new FormGroup({
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
+    email: new FormControl('', [Validators.required, Validators.email]),
   });
 
-emailSent: boolean = false
-errorEmail: boolean = false
-
+  emailSent: boolean = false;
+  errorEmail: boolean = false;
 
   onSubmit() {
     if (this.forgotForm.valid) {
-
-      const forgotForm = this.forgotForm.value
+      const forgotForm = this.forgotForm.value;
       const email: ForgotPasswordRequest = {
-        email : forgotForm.email || ''
-      }
+        email: forgotForm.email || '',
+      };
 
       this.api.forgotPassword(email).subscribe({
         next: (response) => {
-          this.emailSent = true
-                // this.router.navigate(['']);
+          this.emailSent = true;
+          alert('Un email a été envoyé à votre adresse')
+          this.router.navigate(['']);
         },
 
         error: (error) => {
-          this.errorEmail = true
-
-        }
-      })
-
-  
+          this.errorEmail = true;
+        },
+      });
     }
   }
 }
