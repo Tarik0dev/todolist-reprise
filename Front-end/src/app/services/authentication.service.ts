@@ -25,7 +25,6 @@ private http = inject(HttpClient);
       user                    // Argument 2 : LE BODY (les données)
     );
   }
-
   signIn(user:SignInRequestInterface): Observable<SignInResponseInterface> {
     return this.http.post<SignInResponseInterface>(this.apiUrl + '/auth/login', user)
   }

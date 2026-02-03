@@ -41,7 +41,8 @@ export class Authentication implements OnInit {
     this.authenticationService.signIn(credentials).subscribe({
       next: (response: SignInResponseInterface) => {
         // Côté Angular (LoginComponent)
-        localStorage.setItem('token', response.token);
+        console.log(response.user.token);
+        localStorage.setItem('token', response.user.token);
         this.router.navigate(['/dashboard']); // Redirection vers le dashboard
       },
       error: (erreur) => {

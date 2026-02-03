@@ -1,9 +1,8 @@
 <div class="dashboard-container">
-
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="logo">
-      <img src="logo.png" alt="logo" class="logo-icon">
+      <img src="logo.png" alt="logo" class="logo-icon" />
       <h2>TaskFlow</h2>
     </div>
 
@@ -20,21 +19,18 @@
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
-
     <!-- HEADER -->
     <header class="header">
       <div class="header-left">
-        <h1>Bonjour, </h1>
+        <h1>Bonjour, Sami Moussous</h1>
         <p class="date">Mardi 15 Janvier 2025</p>
       </div>
       <div class="header-right">
         <div class="search-box">
           <span class="search-icon">🔍</span>
-          <input type="text" placeholder="Rechercher une tâche...">
+          <input type="text" placeholder="Rechercher une tâche..." />
         </div>
-        <button class="btn-logout" (click)="signOut()">
-          Déconnexion
-        </button>
+        <button type="button" class="btn-logout" (click)="signOut()">Déconnexion</button>
       </div>
     </header>
 
@@ -66,10 +62,13 @@
     <!-- ADD TASK FORM -->
     <section class="add-task-section">
       <form class="add-task-form">
-        <input type="text" placeholder="Ajouter une nouvelle tâche..." class="task-input">
-        <button type="submit" class="btn-add">
-          + Ajouter
-        </button>
+        <input
+          type="text"
+          placeholder="Ajouter une nouvelle tâche..."
+          class="task-input"
+          [formControl]="addTaskInput"
+        />
+        <button type="button" class="btn-add" (click)="onSubmitNewTask()">+ Ajouter</button>
       </form>
     </section>
 
@@ -80,28 +79,23 @@
       </div>
 
       <div class="tasks-list">
-
-        <!-- Task Item -->
-        <div class="task-item">
-          <label class="checkbox-container">
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
-          <div class="task-content">
-            <h3 class="task-title">Terminer le projet Angular DWWM</h3>
-            <div class="task-meta">
-
+        @for (item of tasks(); track item.id) {
+          <div class="task-item">
+            <label class="checkbox-container">
+               <input type="checkbox" [checked]="item.is_done" (change)="updateCheckbox(item)" /> 
+              <span class="checkmark"></span>
+            </label>
+            <div class="task-content">
+              <h3 class="task-title">{{ item.description }}</h3>
+              <div class="task-meta"></div>
+            </div>
+            <div class="task-actions">
+              <button class="btn-icon btn-edit">✏️</button>
+              <button class="btn-icon btn-delete">🗑️</button>
             </div>
           </div>
-          <div class="task-actions">
-            <button class="btn-icon btn-edit">✏️</button>
-            <button class="btn-icon btn-delete">🗑️</button>
-          </div>
-        </div>
-
+        }
       </div>
     </section>
-
   </main>
-
 </div>

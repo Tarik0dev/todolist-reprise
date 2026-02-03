@@ -3,7 +3,9 @@
 // }
 
 export interface SignInResponseInterface {
-  token: string;
+  user: {
+    token: string;
+  }
 }
 export interface RegisterResponseInterface {
   message: string;
