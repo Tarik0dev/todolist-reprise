@@ -18,6 +18,9 @@ app.use('/auth', authRoutes)
 const passwordRoutes = require('./routes/passwordRoutes')
 app.use('/password', passwordRoutes)
 
+const taskRoutes = require('./routes/taskRoutes')
+app.use('/task', taskRoutes)
+
 // --- TEST DE CONNEXION AU DÉMARRAGE ---
 
 
