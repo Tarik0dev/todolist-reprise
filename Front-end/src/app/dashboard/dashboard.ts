@@ -4,9 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddTaskRequestInterface } from '../models/request/crudTaskRequest.interface';
 import { CrudTaskService } from '../services/crud-task.service';
 import { AddTaskResponseInterface, Task } from '../models/response/crudTaskResponse.interface';
-
-
-
+import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 @Component({
   selector: 'app-dashboard',
   imports: [ReactiveFormsModule],
@@ -16,7 +14,7 @@ import { AddTaskResponseInterface, Task } from '../models/response/crudTaskRespo
 export class Dashboard implements OnInit {
   private router = inject(Router);
   private api = inject(CrudTaskService);
- tasks = signal<Task[]>([]); 
+ tasks = signal<Task[]>([]);
   ngOnInit(): void {
     this.getTasks();
   }
@@ -38,6 +36,18 @@ export class Dashboard implements OnInit {
       },
     });
   }
+
+    delete(taskId: number): void {
+      this.api.deleteTask(taskId).subscribe({
+        next: ()=> {
+          this.getTasks()
+        },
+        error: ()=>{
+          alert("Impossible de supprimer cette tâche pour le moment")
+        }
+      })
+    }
+
 
   updateCheckbox(item: Task) {
     console.log(item );

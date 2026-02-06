@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddTaskRequestInterface } from '../models/request/crudTaskRequest.interface';
-import { AddTaskResponseInterface } from '../models/response/crudTaskResponse.interface';
+import { AddTaskResponseInterface, Task } from '../models/response/crudTaskResponse.interface';
 import { GetAllTaskResponseInterface } from '../models/response/crudTaskResponse.interface';
 
 @Injectable({
@@ -22,4 +22,9 @@ export class CrudTaskService {
     return this.http.get<GetAllTaskResponseInterface>(this.apiUrl + '/task/getAll');
 
   }
+
+  deleteTask(taskId: number): Observable<void>{
+    return this.http.delete<void>(this.apiUrl + `/task/delete/${taskId.toString()}`);
+  }
+
 }

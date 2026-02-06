@@ -5,7 +5,16 @@
       <img src="logo.png" alt="logo" class="logo-icon" />
       <h2>TaskFlow</h2>
     </div>
-
+<div>
+  <h3> taches complétées</h3>
+ <ul>
+  <li>truc</li>
+  <li>truc</li>
+  <li>truc</li>
+  <li>truc</li>
+  <li>truc</li>
+ </ul>
+</div>
     <div class="sidebar-footer">
       <div class="user-profile">
         <div class="avatar">JD</div>
@@ -82,7 +91,7 @@
         @for (item of tasks(); track item.id) {
           <div class="task-item">
             <label class="checkbox-container">
-               <input type="checkbox" [checked]="item.is_done" (change)="updateCheckbox(item)" /> 
+               <input type="checkbox" [checked]="item.is_done" (change)="updateCheckbox(item)" />
               <span class="checkmark"></span>
             </label>
             <div class="task-content">
@@ -91,7 +100,7 @@
             </div>
             <div class="task-actions">
               <button class="btn-icon btn-edit">✏️</button>
-              <button class="btn-icon btn-delete">🗑️</button>
+              <button class="btn-icon btn-delete" (click)="delete(item.id)">🗑️</button>
             </div>
           </div>
         }
