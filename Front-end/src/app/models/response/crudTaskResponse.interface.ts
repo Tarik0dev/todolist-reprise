@@ -9,5 +9,8 @@ export interface Task {
 }
 
 export interface GetAllTaskResponseInterface {
-    data: Task[]
+    total: number,
+    ongoing: number,
+    completed: number,
+    result: Task[]
 }

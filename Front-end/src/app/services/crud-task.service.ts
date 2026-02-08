@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddTaskRequestInterface } from '../models/request/crudTaskRequest.interface';
 import { AddTaskResponseInterface, Task } from '../models/response/crudTaskResponse.interface';
@@ -18,9 +18,12 @@ export class CrudTaskService {
     return this.http.post<AddTaskResponseInterface>(this.apiUrl + '/task/add', task);
   }
 
-  getTask(): Observable<GetAllTaskResponseInterface> {
-
-    return this.http.get<GetAllTaskResponseInterface>(this.apiUrl + '/task/getAll');
+  getTask(description?: string): Observable<GetAllTaskResponseInterface> {
+    let options: { [key: string]: string } = {};
+    if (description) {
+      options['description'] = description;
+    }
+    return this.http.get<GetAllTaskResponseInterface>(this.apiUrl + '/task/getAll', { params : options});
 
   }
 

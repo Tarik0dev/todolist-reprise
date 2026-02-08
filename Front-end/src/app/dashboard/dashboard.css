@@ -182,7 +182,9 @@
   gap: 16px;
   box-shadow: var(--shadow);
   border: 1px solid var(--blue-light);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .stat-card:hover {
@@ -246,6 +248,11 @@
   border: 1px solid var(--blue-light);
 }
 
+.taskIsDone {
+  text-decoration-line: line-through;
+  opacity: 0.7;
+}
+
 .task-input {
   flex: 1;
   padding: 12px 16px;
@@ -275,7 +282,9 @@
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .btn-add:hover {
@@ -379,7 +388,6 @@
   gap: 16px;
 }
 
-
 .task-actions {
   display: flex;
   gap: 8px;
@@ -451,27 +459,90 @@
 }
 
 @media (max-width: 600px) {
-  .stats-container {
-    grid-template-columns: 1fr;
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
   }
 
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .header-left h1 {
+    font-size: 1.3rem;
+  }
+
+  .date {
+    font-size: 0.8rem;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-box {
+    width: 100%;
   }
 
   .search-box input {
-    width: 150px;
+    width: 100%;
+  }
+
+  .btn-logout {
+    width: 100%;
+    text-align: center;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 14px 16px;
+  }
+
+  .stat-number {
+    font-size: 1.3rem;
+  }
+
+  .add-task-form {
+    flex-direction: column;
+  }
+
+  .btn-add {
+    width: 100%;
+  }
+
+  .tasks-section {
+    padding: 16px;
   }
 
   .task-item {
     flex-wrap: wrap;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .task-content {
+    width: calc(100% - 40px);
+  }
+
+  .task-title {
+    font-size: 0.9rem;
   }
 
   .task-actions {
     width: 100%;
     justify-content: flex-end;
-    margin-top: 10px;
+    gap: 12px;
   }
 }

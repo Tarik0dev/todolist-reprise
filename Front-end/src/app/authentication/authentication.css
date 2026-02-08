@@ -1,3 +1,6 @@
+/* ========================================
+   PAGE AUTHENTIFICATION
+   ======================================== */
 .view {
   width: 100%;
   height: 100vh;
@@ -5,63 +8,164 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 16px;
+  background-color: var(--background-color);
 }
 
+/* ========================================
+   FORMULAIRE PRINCIPAL
+   ======================================== */
 .form {
-  width: 30%;
-  background-color: #5aa0de;
+  width: 420px;
+  background-color: var(--blue-background);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60%;
   flex-direction: column;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   gap: 20px;
-  padding: 10px;
-  border: 1px solid #08579d;
+  padding: 40px 32px;
+  border: 1px solid var(--blue-dark);
+  box-shadow: var(--shadow-lg);
 }
-h1 {
-  color: #08579d;
-}
-h2,
-label {
-  color: #08579d;
-}
-h3 {
-  color: rgb(255, 255, 255);
-  font-size: 0.9em;
-}
+
+/* ========================================
+   HEADER (Logo + Titre)
+   ======================================== */
 .header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  width: 80%;
-  padding-bottom: 50px;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 24px;
   border-bottom: 1px solid var(--blue-dark);
 }
 
+h1 {
+  color: var(--blue-text);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+h2 {
+  color: var(--blue-text);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+h3 {
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+/* ========================================
+   FORMULAIRE
+   ======================================== */
 form {
   display: flex;
   flex-direction: column;
-gap: 2px
-
+  gap: 12px;
+  width: 100%;
 }
 
 .group-input {
   display: flex;
-  justify-content: space-between;
-;
+  flex-direction: column;
+  gap: 6px;
 }
 
-button { border: none;padding: 5px;color: var(--blue-dark);}
-button:hover {cursor: pointer;}
-button:active {background-color: black;}
+label {
+  color: var(--blue-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
 
-.invalid-form{ opacity: 0.6;}
+.group-input input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: var(--blue-dark);
+  color: var(--white);
+  font-size: 0.95rem;
+  transition: box-shadow 0.2s ease;
+}
 
+.group-input input::placeholder {
+  color: var(--blue-light);
+}
+
+.group-input input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--white);
+}
+
+/* ========================================
+   BOUTON
+   ======================================== */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+button[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+.invalid-form {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ========================================
+   LIENS
+   ======================================== */
+form a {
+  color: var(--white);
+  font-size: 0.8rem;
+  text-align: center;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+form a:hover {
+  opacity: 0.8;
+}
+
+.view > p {
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+
+.view > p a {
+  color: var(--blue-dark);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.view > p a:hover {
+  color: var(--blue-text);
+}
+
+/* ========================================
+   MESSAGES D'ERREUR
+   ======================================== */
 .error {
-  min-height: 14px; /* espace réservé */
+  min-height: 14px;
   font-size: 0.75rem;
   color: rgb(141, 18, 18);
   opacity: 0;
@@ -70,4 +174,53 @@ button:active {background-color: black;}
 
 .error.visible {
   opacity: 1;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+  .form {
+    width: 90%;
+    padding: 32px 24px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form {
+    width: 95%;
+    padding: 24px 16px;
+  }
+
+  .group-input input {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  button[type="submit"] {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
 }

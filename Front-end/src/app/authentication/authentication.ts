@@ -5,6 +5,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { SignInRequestInterface } from '../models/request/authenticationRequest.interface';
 import { SignInResponseInterface } from '../models/response/authenticationResponse.interface';
 import { ErrorMessage } from '../components/error-message/error-message';
+import { HlmButton } from '@spartan-ng/helm/button';
 
 @Component({
   selector: 'app-authentication',

@@ -6,21 +6,12 @@
       <img src="logo.png" alt="logo" class="logo-icon" />
       <h2>TaskFlow</h2>
     </div>
-    <div>
-      <h3>taches complétées</h3>
-      <ul>
-        <li>truc</li>
-        <li>truc</li>
-        <li>truc</li>
-        <li>truc</li>
-        <li>truc</li>
-      </ul>
-    </div>
+
     <div class="sidebar-footer">
       <div class="user-profile">
-        <div class="avatar">JD</div>
+        <div class="avatar">{{ userInitials()}} </div>
         <div class="user-info">
-          <span class="user-name">nom utilisateur</span>
+          <span class="user-name">{{ userFirstName() + ' ' + userLastName() }}</span>
           <span class="user-email"></span>
         </div>
       </div>
@@ -32,13 +23,13 @@
     <!-- HEADER -->
     <header class="header">
       <div class="header-left">
-        <h1>Bonjour, Sami Moussous</h1>
-        <p class="date">Mardi 15 Janvier 2025</p>
+        <h1>Bonjour, {{ userFirstName()}}</h1>
+        <p class="date">{{ today | date:'fullDate' }}</p>
       </div>
       <div class="header-right">
         <div class="search-box">
           <span class="search-icon">🔍</span>
-          <input type="text" placeholder="Rechercher une tâche..." />
+          <input type="search" placeholder="Rechercher une tâche..." [formControl]="searchInput" />
         </div>
         <button type="button" class="btn-logout" (click)="signOut()">Déconnexion</button>
       </div>
@@ -49,21 +40,21 @@
       <div class="stat-card stat-total">
         <div class="stat-icon">📋</div>
         <div class="stat-info">
-          <span class="stat-number">24</span>
+          <span class="stat-number">{{ totalTasks() }}</span>
           <span class="stat-label">Total Tâches</span>
         </div>
       </div>
       <div class="stat-card stat-pending">
         <div class="stat-icon">⏳</div>
         <div class="stat-info">
-          <span class="stat-number">12</span>
+          <span class="stat-number">{{ ongoingTasks() }}</span>
           <span class="stat-label">En Cours</span>
         </div>
       </div>
       <div class="stat-card stat-completed">
         <div class="stat-icon">✅</div>
         <div class="stat-info">
-          <span class="stat-number">8</span>
+          <span class="stat-number">{{ completedTasks() }}</span>
           <span class="stat-label">Complétées</span>
         </div>
       </div>
@@ -83,20 +74,23 @@
       <div class="tasks-header">
         <h2>Mes Tâches</h2>
       </div>
-
+ 
       <div class="tasks-list">
         @for (item of tasks(); track item.id) {
         <div class="task-item">
           <label class="checkbox-container">
+
             <input type="checkbox" [checked]="item.is_done" (change)="updateCheckbox(item)" />
             <span class="checkmark"></span>
           </label>
           <div class="task-content">
-            <h3 class="task-title">{{ item.description }}</h3>
+
+            <h3 class="task-title" [class.taskIsDone]="item.is_done === true">{{ item.description }}</h3>
             <div class="task-meta"></div>
           </div>
+          
           <div class="task-actions">
-            <hlm-dialog >
+            <hlm-dialog>
               <button hlmDialogTrigger hlmBtn class="bg-sky-700">✏️</button>
               <hlm-dialog-content class="sm:max-w-106.25 bg-neutral-800 w-96" *hlmDialogPortal="let ctx">
 
@@ -106,7 +100,8 @@
                 <form class="flex flex-col gap-4 ">
                   <label for="" class="text-sky-100 text-center ">Modifier la tache</label>
                   <input type="text" name="" id="" class="bg-sky-100 task-modified" [formControl]="updateTaskInput">
-                  <button type="submit" hlmBtn class="bg-sky-700" brnDialogClose (click)="OnSubmitUpdatedTask(item.id)">Modifier</button>
+                  <button type="submit" hlmBtn class="bg-sky-700" brnDialogClose
+                    (click)="OnSubmitUpdatedTask(item.id)">Modifier</button>
                 </form>
 
               </hlm-dialog-content>

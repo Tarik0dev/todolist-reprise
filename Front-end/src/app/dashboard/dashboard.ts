@@ -6,19 +6,55 @@ import { CrudTaskService } from '../services/crud-task.service';
 import { AddTaskResponseInterface, Task } from '../models/response/crudTaskResponse.interface';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ReactiveFormsModule, HlmButtonImports, HlmDialogImports],
+  imports: [ReactiveFormsModule, HlmButtonImports, HlmDialogImports, DatePipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
   private router = inject(Router);
   private api = inject(CrudTaskService);
+  totalTasks = signal<number>(0);
+  ongoingTasks = signal<number>(0);
+  completedTasks = signal<number>(0);
   tasks = signal<Task[]>([]);
   ngOnInit(): void {
     this.getTasks();
+    this.getUserInfo();
+    this.searchInput.valueChanges.subscribe({next: (value: string | null) => {
+      if (value) {
+        this.getTasks();
+      }
+    }});
+  }
+  
+  userFirstName = signal('');
+  userLastName = signal('');
+  userInitials = signal('');
+
+  searchInput = new FormControl<string>('');
+
+  today: number = Date.now();
+  getUserInfo() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload));
+
+      // Affiche tout le contenu du token
+      console.log('Token décodé :', decoded);
+      const userFirstName = decoded.firstname;
+      const userLastName = decoded.lastname;
+      const firstInitial = decoded.firstName.charAt(0).toUpperCase();
+      const lastInitial = decoded.lastName.charAt(0).toUpperCase();
+      this.userFirstName.set(decoded.firstName);
+      this.userLastName.set(decoded.lastName);
+      this.userInitials.set(firstInitial + lastInitial);
+    }
   }
   signOut(): void {
     localStorage.removeItem('token');
@@ -28,11 +64,20 @@ export class Dashboard implements OnInit {
   addTaskInput = new FormControl('', [Validators.required, Validators.maxLength(100)]);
   updateTaskInput = new FormControl('', [Validators.required, Validators.maxLength(100)]);
 
+  // getname(){
+
+  // }
   getTasks() {
-    this.api.getTask().subscribe({
+    let descriptionParams: string | undefined = undefined;
+    if (this.searchInput.value && this.searchInput.value.length > 2) {
+      descriptionParams = this.searchInput.value;
+    }
+    this.api.getTask(descriptionParams).subscribe({
       next: (response) => {
-        console.log(response.data);
-        this.tasks.set(response.data);
+        this.tasks.set(response.result);
+        this.totalTasks.set(response.total);
+        this.ongoingTasks.set(response.ongoing);
+        this.completedTasks.set(response.completed);
       },
       error: (error) => {
         console.error('Erreur:', error);
@@ -54,11 +99,9 @@ export class Dashboard implements OnInit {
   OnSubmitUpdatedTask(taskId: number) {
     if (this.updateTaskInput.valid) {
       const value = this.updateTaskInput.value || '';
-    
 
       this.api.updateTask(taskId, value).subscribe({
         next: () => {
-      
           this.updateTaskInput.setValue(null);
           this.getTasks();
         },
@@ -70,19 +113,18 @@ export class Dashboard implements OnInit {
   }
 
   updateCheckbox(item: Task) {
+    const newValue = !item.is_done;
 
-   const newValue = !item.is_done;
-
-// 2. Envoyer au serveur
-this.api.completedTask(item.id, { is_done: newValue }).subscribe({
-    next: () => {
+    // 2. Envoyer au serveur
+    this.api.completedTask(item.id, { is_done: newValue }).subscribe({
+      next: () => {
         console.log('Checkbox mise à jour');
         this.getTasks();
-    },
-    error: (error) => {
+      },
+      error: (error) => {
         console.error('Erreur :', error);
-    }
-});
+      },
+    });
   }
 
   onSubmitNewTask() {
