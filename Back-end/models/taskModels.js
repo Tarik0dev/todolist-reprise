@@ -9,12 +9,20 @@ const taskModel = {
 
     return result.rows[0];
   },
-  getAll: async (userId) => {
-    const result = await pool.query(
-      "SELECT id, description, is_done FROM tasks WHERE user_id = $1 ORDER BY created_at DESC ",
-      [userId],
-    );
+  getAll: async (userId, description) => {
+    const desc = (description ?? "").trim();
 
+    let query = "SELECT id, description, is_done FROM tasks WHERE user_id = $1";
+    const values = [userId];
+
+    if (desc.length > 0) {
+      query += " AND description ILIKE $2";
+      values.push(`%${desc}%`);
+    }
+
+    query += " ORDER BY created_at DESC";
+
+    const result = await pool.query(query, values);
     return result.rows;
   },
 
@@ -27,8 +35,8 @@ const taskModel = {
         COUNT(*) FILTER (WHERE is_done = true) as completed
       FROM tasks 
       WHERE user_id = $1
-      ` ,
-      [userId]
+      `,
+      [userId],
     );
 
     return result.rows[0];

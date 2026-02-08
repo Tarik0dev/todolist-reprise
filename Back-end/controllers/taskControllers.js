@@ -26,7 +26,10 @@ const taskControllers = {
     try {
       const user = req.auth;
 
-      const tasks = await taskModel.getAll(user.userId);
+      const raw = req.query.description;
+      const description = (Array.isArray(raw) ? raw[0] : raw) ?? '';
+
+      const tasks = await taskModel.getAll(user.userId, description);
 
       const stats = await taskModel.getTaskStats(user.userId);
 
