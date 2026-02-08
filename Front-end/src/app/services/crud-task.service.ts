@@ -5,6 +5,7 @@ import { AddTaskRequestInterface } from '../models/request/crudTaskRequest.inter
 import { AddTaskResponseInterface, Task } from '../models/response/crudTaskResponse.interface';
 import { GetAllTaskResponseInterface } from '../models/response/crudTaskResponse.interface';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -26,5 +27,17 @@ export class CrudTaskService {
   deleteTask(taskId: number): Observable<void>{
     return this.http.delete<void>(this.apiUrl + `/task/delete/${taskId.toString()}`);
   }
+
+  updateTask(taskId: number, description :string):Observable<void>{
+
+    return this.http.put<void>(this.apiUrl + `/task/update/${taskId.toString()}`,{description})
+  }
+
+completedTask(taskId: number, data: { is_done: boolean }): Observable<void> {
+    return this.http.put<void>(
+        this.apiUrl + `/task/completed/${taskId.toString()}`,
+        data
+    );
+}
 
 }
