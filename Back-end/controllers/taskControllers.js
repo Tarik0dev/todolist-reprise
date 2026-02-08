@@ -22,50 +22,67 @@ const taskControllers = {
     }
   },
 
-  getAll: async(req, res) => {
-
+  getAll: async (req, res) => {
     try {
       const user = req.auth;
 
       const tasks = await taskModel.getAll(user.userId);
 
       res.status(200).json({
-        data: tasks
+        data: tasks,
       });
-
-
-    }
-    catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
       res.status(400).json({
         message: "Erreur lors de la récupération des tâches.",
       });
     }
-    
   },
 
-  delete: async(req, res) => {
-
+  delete: async (req, res) => {
     try {
-          const user = req.auth.userId;
-          const taskId = req.params.taskId;
-          const request = await taskModel.delete(user, taskId)
-          res.status(200).json({
-        message: "la tache à bien été supprimée"
+      const user = req.auth.userId;
+      const taskId = req.params.taskId;
+      const request = await taskModel.delete(user, taskId);
+      res.status(200).json({
+        message: "la tache à bien été supprimée",
       });
-      console.log("la tache à bien été supprimée")
+      console.log("la tache à bien été supprimée");
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  update: async (req, res) => {
+    try {
+      const user = req.auth.userId;
+      const taskId = req.params.taskId;
+      const description = req.body.description
+      const request = await taskModel.update(description, user, taskId, );
+      res.status(200).json({
+        message: "la tache à bien été mise à jour",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  updateCheckboxTask: async (req, res) => {
+
+
+  try {
+      const user = req.auth.userId;
+      const taskId = req.params.taskId;
+      const is_done = req.body.is_done
+      const request = await taskModel.updateCheckboxTask(is_done, user, taskId, );
+      res.status(200).json({
+        message: "la tache à bien été mise à jour",
+      });
+    } catch (error) {
+      console.log(error);
     }
 
-    catch (error) {
-
-      console.log(error)
-    }
 
   }
-
-
-
-
-
 };
 module.exports = taskControllers;

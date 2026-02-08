@@ -26,7 +26,24 @@ delete: async(user, taskId) => {
     "DELETE FROM tasks WHERE user_id = $1 AND id = $2",
     [user, taskId]
   )
-}
+},
+update: async(description, user, taskId) => {
+
+  const result = await pool.query(
+
+    "UPDATE tasks SET description = $1 WHERE user_id = $2 AND id = $3",
+    [description, user, taskId]
+  )
+},
+
+updateCheckboxTask: async(is_done, user, taskId)=> {
+
+  const result = await pool.query(
+
+    "UPDATE tasks SET is_done = $1 WHERE user_id = $2 AND id = $3",
+    [is_done, user, taskId]
+  )
+},
 };
 
 
