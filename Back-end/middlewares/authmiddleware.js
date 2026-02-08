@@ -1,3 +1,4 @@
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const authMiddleware = (req, res, next) => {
@@ -23,7 +24,7 @@ const authMiddleware = (req, res, next) => {
         // Le token est valide. Il contient l'ID (userId).
         // On stocke cet ID dans l'objet "req" pour que le contrôleur y ait accès.
         // On crée une propriété "auth" (ou "user") dans req.
-        req.auth = {userId: decodedToken.userId,role: decodedToken.role};
+        req.auth = {userId: decodedToken.userId,role: decodedToken.role, firstName: decodedToken.firstname, lastName: decodedToken.lastname  };
         // ÉTAPE 5 : Passer au suivant
         // Tout est OK, on laisse la requête continuer son chemin.
         next();

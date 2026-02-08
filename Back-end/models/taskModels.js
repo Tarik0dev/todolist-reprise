@@ -10,41 +10,49 @@ const taskModel = {
     return result.rows[0];
   },
   getAll: async (userId) => {
-  const result = await pool.query(
-    "SELECT id, description, is_done FROM tasks WHERE user_id = $1 ORDER BY created_at DESC ",
-    [userId],
-  );
+    const result = await pool.query(
+      "SELECT id, description, is_done FROM tasks WHERE user_id = $1 ORDER BY created_at DESC ",
+      [userId],
+    );
 
-  return result.rows;
-},
+    return result.rows;
+  },
 
+  getTaskStats: async (userId) => {
+    const result = await pool.query(
+      `
+      SELECT 
+        COUNT(id) as total,
+        COUNT(*) FILTER (WHERE is_done = false) as ongoing,
+        COUNT(*) FILTER (WHERE is_done = true) as completed
+      FROM tasks 
+      WHERE user_id = $1
+      ` ,
+      [userId]
+    );
 
-delete: async(user, taskId) => {
+    return result.rows[0];
+  },
 
-  const result = await pool.query(
+  delete: async (user, taskId) => {
+    const result = await pool.query(
+      "DELETE FROM tasks WHERE user_id = $1 AND id = $2",
+      [user, taskId],
+    );
+  },
+  update: async (description, user, taskId) => {
+    const result = await pool.query(
+      "UPDATE tasks SET description = $1 WHERE user_id = $2 AND id = $3",
+      [description, user, taskId],
+    );
+  },
 
-    "DELETE FROM tasks WHERE user_id = $1 AND id = $2",
-    [user, taskId]
-  )
-},
-update: async(description, user, taskId) => {
-
-  const result = await pool.query(
-
-    "UPDATE tasks SET description = $1 WHERE user_id = $2 AND id = $3",
-    [description, user, taskId]
-  )
-},
-
-updateCheckboxTask: async(is_done, user, taskId)=> {
-
-  const result = await pool.query(
-
-    "UPDATE tasks SET is_done = $1 WHERE user_id = $2 AND id = $3",
-    [is_done, user, taskId]
-  )
-},
+  updateCheckboxTask: async (is_done, user, taskId) => {
+    const result = await pool.query(
+      "UPDATE tasks SET is_done = $1 WHERE user_id = $2 AND id = $3",
+      [is_done, user, taskId],
+    );
+  },
 };
-
 
 module.exports = taskModel;

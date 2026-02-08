@@ -28,9 +28,16 @@ const taskControllers = {
 
       const tasks = await taskModel.getAll(user.userId);
 
-      res.status(200).json({
-        data: tasks,
-      });
+      const stats = await taskModel.getTaskStats(user.userId);
+
+      const response = {
+        total: stats.total,
+        ongoing: stats.ongoing,
+        completed: stats.completed,
+        result: tasks
+      };
+
+      res.status(200).json(response);
     } catch (error) {
       console.log(error);
       res.status(400).json({
