@@ -1,8 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../services/authentication.service';
-import { ResetPasswordRequestInterface } from '../models/request/forgotPasswordRequest.interface';
+import { AuthenticationService } from '../app/services/authentication.service';
+import { ResetPasswordRequestInterface } from '../app/models/request/forgotPasswordRequest.interface';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-reset-password',
@@ -14,7 +15,7 @@ import { ResetPasswordRequestInterface } from '../models/request/forgotPasswordR
 export class ResetPassword implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
-  authenticationService = inject(AuthenticationService)
+  api = inject(AuthenticationService);
 
   private token!: string;
 
@@ -22,7 +23,7 @@ export class ResetPassword implements OnInit {
     this.token = this.route.snapshot.params['token'];
     console.log(this.token);
     if (!this.token) {
-       this.router.navigate(['/']);
+      this.router.navigate(['/']);
     }
   }
 
@@ -35,35 +36,29 @@ export class ResetPassword implements OnInit {
     confirmPassword: new FormControl('', [Validators.required]),
   });
 
- isMatch() : boolean {
-  if ( this.resetForm.get('password')?.value ===  this.resetForm.get('confirmPassword')?.value ){
-
-    return true
+  isMatch(): boolean {
+    if (this.resetForm.get('password')?.value === this.resetForm.get('confirmPassword')?.value) {
+      return true;
+    }
+    return false;
   }
-  return false
- }
   onSubmit() {
     if (this.resetForm.valid && this.isMatch()) {
-
-      // const newPassword = {token}
-      
       const data: ResetPasswordRequestInterface = {
         token: this.token,
-        password: this.resetForm.get('password')?.value as string
-      }
+        password: this.resetForm.get('password')?.value as string,
+      };
 
-      this.authenticationService.resetPassword(data).subscribe({
+      this.api.resetPassword(data).subscribe({
         next: (response) => {
-          alert(response.message);
+          toast.success('Votre mot de passe à été réinitialisé avec succès');
         },
         error: (error) => {
-          console.log(error);
-        }
-      })
-
-
-
-      alert('Votre mot de passe à été réinitialisé avec succés !');
+          toast.error(
+            'Nos serveurs rencontre actuellement des difficultés, veuillez réessayer ultérieuement',
+          );
+        },
+      });
 
       this.router.navigate(['/dashboard']);
     }

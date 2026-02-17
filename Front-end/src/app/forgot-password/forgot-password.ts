@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { ForgotPasswordRequest } from '../models/request/forgotPasswordRequest.interface';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-forgot-password',
@@ -32,11 +33,12 @@ export class ForgotPassword {
       this.api.forgotPassword(email).subscribe({
         next: (response) => {
           this.emailSent = true;
-          alert('Un email a été envoyé à votre adresse')
+          toast.success('Un email a été envoyé à votre adresse')
           this.router.navigate(['']);
         },
 
         error: (error) => {
+          toast.error('Le serveur est actuellement indisponible, veuillez réessayer ultérieuement')
           this.errorEmail = true;
         },
       });

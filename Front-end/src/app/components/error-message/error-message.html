@@ -1,4 +1,8 @@
 @if (display()) {
-    {{message()}}
-    <button (click)="close()">X</button>
+    {{ showToast()}}
+
+
 }
+
+<hlm-toaster />
+<button hlmBtn (click)="showToast()">Show Toast</button>

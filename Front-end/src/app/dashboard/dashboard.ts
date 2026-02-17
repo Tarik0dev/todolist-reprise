@@ -7,6 +7,7 @@ import { AddTaskResponseInterface, Task } from '../models/response/crudTaskRespo
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 import { DatePipe } from '@angular/common';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-dashboard',
@@ -59,14 +60,14 @@ export class Dashboard implements OnInit {
   signOut(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/']);
+    toast.success('Vous vous êtes déconnecté')
   }
 
   addTaskInput = new FormControl('', [Validators.required, Validators.maxLength(100)]);
   updateTaskInput = new FormControl('', [Validators.required, Validators.maxLength(100)]);
 
-  // getname(){
 
-  // }
+
   getTasks() {
     let descriptionParams: string | undefined = undefined;
     if (this.searchInput.value && this.searchInput.value.length > 2) {
@@ -115,7 +116,6 @@ export class Dashboard implements OnInit {
   updateCheckbox(item: Task) {
     const newValue = !item.is_done;
 
-    // 2. Envoyer au serveur
     this.api.completedTask(item.id, { is_done: newValue }).subscribe({
       next: () => {
         console.log('Checkbox mise à jour');

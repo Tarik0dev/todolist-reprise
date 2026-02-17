@@ -38,5 +38,4 @@ private http = inject(HttpClient);
     return this.http.post<ResetPasswordResponse>(this.apiUrl + '/password/reset-password', data);
   }
 
-
 }

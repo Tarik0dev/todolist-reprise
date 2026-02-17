@@ -4,27 +4,22 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { AuthenticationService } from '../services/authentication.service';
 import { SignInRequestInterface } from '../models/request/authenticationRequest.interface';
 import { SignInResponseInterface } from '../models/response/authenticationResponse.interface';
-import { ErrorMessage } from '../components/error-message/error-message';
-import { HlmButton } from '@spartan-ng/helm/button';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-authentication',
-  imports: [RouterLink, ReactiveFormsModule, ErrorMessage],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './authentication.html',
   styleUrl: './authentication.css',
 })
 export class Authentication implements OnInit {
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
-  public hasError = signal<boolean>(false);
-  ngOnInit(): void {
-    if (localStorage.getItem("token")) {
-       this.router.navigate(['/dashboard']);
-    }
-  }
 
-  onClosed(display: boolean) {
-    this.hasError.set(display);
+  ngOnInit(): void {
+    if (localStorage.getItem('token')) {
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   authForm = new FormGroup({
@@ -41,14 +36,13 @@ export class Authentication implements OnInit {
 
     this.authenticationService.signIn(credentials).subscribe({
       next: (response: SignInResponseInterface) => {
-        // Côté Angular (LoginComponent)
-        console.log(response.user.token);
+      
+        toast.success('Vous êtes bien connectés !');
         localStorage.setItem('token', response.user.token);
-        this.router.navigate(['/dashboard']); // Redirection vers le dashboard
+        this.router.navigate(['/dashboard']); 
       },
-      error: (erreur) => {
-        this.hasError.set(true);
-        console.error('Erreur :', erreur);
+      error: () => {
+        toast.error("L'identifiant et/ou le mot de passe sont incorrects");
       },
     });
   }
