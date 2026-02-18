@@ -1,3 +1,8 @@
+# INFO : si tu as déjà lancer un containeur db avec d'anciennes variables d'environnement
+# supprime les volumes docker compose down -v (-v = volumes)
+# Si ça persiste docker volumes ls (pour afficher les volumes encore existant)
+# docker volumes rm nom_du_volume (ex todo_data)
+
 version: "3.9"
 services:
   postgresql:
@@ -29,6 +34,31 @@ services:
       - postgresql
     ports:
       - "5433:80"
+  
+  backend:
+    # pense à build l'image avant de lancer le compose - pareil pour le front plus tard.
+    image: todolist_api:latest
+    # je déclarer tout les variables d'env dont j'ai besoin pour mon container
+    # ${} permet de récupérer la var d'env
+    environment:
+      PORT: ${PORT}
+      # Dans le cas d'app containeuriser, il faut remplacer localhost par le host docker (le nom du service)
+      DB_HOST: postgresql
+      # DB_PORT=utiliser le deuxième port de la propriété ports: - "XXXX:XXXX"
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      RESET_PASSWORD_SECRET: ${RESET_PASSWORD_SECRET}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASS: ${MAIL_PASS}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgresql
+
 
 volumes:
   todo_data:
