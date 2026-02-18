@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-require('dotenv').config({path : '../.env' });
+require('dotenv').config({ path: '../.env' });
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -11,6 +11,7 @@ const pool = new Pool({
 
 // Écouteur : cette ligne est faite pour tester : dès qu'un client se connecte au pool, on log le message
 pool.on('connect', () => {
+
     console.log('✅ Connexion à la BDD réussie !');
 });
 

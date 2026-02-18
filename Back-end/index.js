@@ -9,7 +9,8 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-res.send('API Todo List est en ligne !');});
+    res.send('API Todo List est en ligne !');
+});
 
 
 const authRoutes = require('./routes/authRoutes')
@@ -26,7 +27,6 @@ app.use('/task', taskRoutes)
 
 app.listen(PORT, async () => {// On force le serveur à dire "Bonjour" à PostgreSQL dès qu'il s'allume
     console.log(`Serveur démarré sur le port ${PORT}`);
-
     try {
         // On fait une requête simple (SELECT NOW) pour vérifier la connexion
         await pool.query('SELECT NOW()');

@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  postgresql:
+    image: postgres:latest
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - todo_data:/var/lib/postgresql
+  
+  pgadmin:
+    # see https://hub.docker.com/r/dpage/pgadmin4
+    image: dpage/pgadmin4:latest # To download the latest image
+    volumes:
+      - pgadmin_working_dir:/var/lib/pgadmin
+      - pgadmin_config_dir:/pgadmin4
+    env_file:
+      - .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${MAIL_USER}
+      PGADMIN_DEFAULT_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - postgresql
+    ports:
+      - "5433:80"
+
+volumes:
+  todo_data:
+    name: todo_data 
+  pgadmin_working_dir:
+  pgadmin_config_dir:
