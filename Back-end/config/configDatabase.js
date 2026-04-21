@@ -9,7 +9,7 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
-// Écouteur : cette ligne est faite pour tester : dès qu'un client se connecte au pool, on log le message
+
 pool.on('connect', () => {
     console.log('✅ Connexion à la BDD réussie !');
 });

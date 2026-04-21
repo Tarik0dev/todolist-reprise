@@ -7,7 +7,7 @@ const authModel = {
       [email]
     );
 
-    return result.rows[0]; // undefined si pas trouvé
+    return result.rows[0];
   },
   resetPassword: async (email, password) => {
         await pool.query(`
@@ -16,7 +16,7 @@ const authModel = {
             WHERE email = $2
         `, [password, email]);
     },
-  
+
 };
 
 module.exports = authModel;

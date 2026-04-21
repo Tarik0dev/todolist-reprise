@@ -8,7 +8,7 @@ const taskControllers = {
 
       await taskService.addTask(description, userId);
 
-      // 201 status created -> une resource a été crée / 200 aussi valide dans ce cas.
+
       res.status(201).json({
         message: "La tâche a été inséré.",
       });

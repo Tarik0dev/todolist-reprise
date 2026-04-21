@@ -24,6 +24,7 @@ async function resetPassword(password, token) {
   await authModel.resetPassword(email, await bcrypt.hash(password, 10));
 }
 
+
 async function forgotPassword(email) {
   const user = await authModel.findByEmail(email);
 
@@ -58,6 +59,7 @@ async function register(firstName, lastName, email, password) {
   });
 }
 
+
 async function login(email, password) {
   const user = await authModel.findByEmail(email);
 
@@ -71,7 +73,8 @@ async function login(email, password) {
     throw new Error("Mot de passe incorrecte.");
   }
 
-  const token = jwt.sign(
+  try {
+    const token = jwt.sign(
     {
       userId: user.id,
       role: user.role,
@@ -82,11 +85,14 @@ async function login(email, password) {
     { expiresIn: process.env.JWT_EXPIRES_IN },
   );
 
-  return {
-    id: user.id,
-    email: user.email,
-    token: token,
-  };
+    return {
+      id: user.id,
+      email: user.email,
+      token: token,
+    };
+  } catch (error) {
+    throw new Error("Erreur lors de la génération du token");
+  }
 }
 
 module.exports = {

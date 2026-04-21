@@ -4,12 +4,13 @@ async function addTask(description, userId) {
     if (!description || description.length === 0) {
         throw new Error("Description manquante.")
     }
-    
+
     await taskModel.create({
         description,
         userId,
     });
 }
+
 
 async function getAllTasks(userId, description) {
 
@@ -32,6 +33,7 @@ async function deleteTask(userId, taskId) {
     await taskModel.delete(userId, taskId);
 }
 
+
 async function updateTask(userId, taskId, description) {
     if (!taskId) {
         throw new Error("Veuillez préciser un identifiant de tâche.")
@@ -39,7 +41,7 @@ async function updateTask(userId, taskId, description) {
     if (!description || description.length === 0) {
         throw new Error("Description manquante.")
     }
-    await taskModel.update(description, userId, taskId);
+    await taskModel.update(userId, taskId, description);
 }
 
 async function updateTaskStatus(status, userId, taskId) {

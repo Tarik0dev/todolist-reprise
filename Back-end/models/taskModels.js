@@ -7,7 +7,7 @@ const taskModel = {
       [description, userId],
     );
 
-    return result.rows[0];
+    return result.rows[0]
   },
   getAll: async (userId, description) => {
     const desc = (description ?? "").trim();
