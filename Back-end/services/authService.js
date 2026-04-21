@@ -11,7 +11,13 @@ async function resetPassword(password, token) {
   if (!token || token.length === 0) {
     throw new Error("Token incorrecte");
   }
-  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  let payload;
+
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    throw new Error("Token invalide");
+  }
   const email = payload.email;
 
   const user = await authModel.findByEmail(email);

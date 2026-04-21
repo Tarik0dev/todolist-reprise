@@ -1,6 +1,6 @@
 // reset password / login
 
-const { login } = require("../services/authService");
+const { login, resetPassword } = require("../services/authService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const transporter = require("../config/nodemailer");
@@ -97,5 +97,83 @@ describe("login", () => {
         expect(jwt.sign).toHaveBeenCalledTimes(1);
 
     })
+
+})
+
+describe("reset-password", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("reset-password rejette une erreur lorsque le mot de password n'est pas conforme ou null", async () => {
+        await expect(resetPassword("", "xxxx.xxxx.xxxx")).rejects.toThrow("Mot de passe non renseigné ou incorrecte.");
+        expect(jwt.verify).not.toHaveBeenCalled();
+        expect(authModels.findByEmail).not.toHaveBeenCalled();
+        expect(authModels.resetPassword).not.toHaveBeenCalled();
+        expect(bcrypt.hash).not.toHaveBeenCalled();
+
+    });
+
+    it("reset-password rejette une erreur lorsque le token n'est pas conforme ou null", async () => {
+        await expect(resetPassword("azerty1234+", null)).rejects.toThrow("Token incorrecte");
+        expect(jwt.verify).not.toHaveBeenCalled();
+        expect(authModels.findByEmail).not.toHaveBeenCalled();
+        expect(authModels.resetPassword).not.toHaveBeenCalled();
+        expect(bcrypt.hash).not.toHaveBeenCalled();
+
+    });
+
+    it("reset-password rejette une erreur lorsque le token n'est pas conforme ou null", async () => {
+        jwt.verify.mockImplementation(() => {
+            throw new Error("invalid token");
+        });
+        await expect(resetPassword("azerty1234+", "xxxx.xxxx.xxxx")).rejects.toThrow("Token invalide");
+        expect(jwt.verify).toHaveBeenCalledTimes(1);
+        expect(authModels.findByEmail).not.toHaveBeenCalled();
+        expect(authModels.resetPassword).not.toHaveBeenCalled();
+        expect(bcrypt.hash).not.toHaveBeenCalled();
+
+    });
+
+    it("reset-password rejette une erreur lorsque l'email issu du token n'est pas valide", async () => {
+        jwt.verify.mockReturnValue({
+            email: "john@doe.fr",
+        });
+        
+        authModels.findByEmail.mockResolvedValue(null);
+
+        await expect(resetPassword("azerty1234+", "xxxx.xxxx.xxxx")).rejects.toThrow("Utilisateur inexistant.");
+        expect(jwt.verify).toHaveBeenCalledTimes(1);
+        expect(authModels.findByEmail).toHaveBeenCalledWith("john@doe.fr");
+        expect(authModels.resetPassword).not.toHaveBeenCalled();
+        expect(bcrypt.hash).not.toHaveBeenCalled();
+    });
+
+    it("reset-password doit modifier le mot de passe de l'utilisateur avec le nouveau mot de passe hashé", async () => {
+        jwt.verify.mockReturnValue({
+            email: "john@doe.fr",
+        });
+        
+        authModels.findByEmail.mockResolvedValue({
+            id: 1,
+            email: "john@doe.fr",
+            password: "hashed-password",
+            role: "user",
+            firstname: "John",
+            lastname: "Doe"
+        });
+
+        bcrypt.hash.mockReturnValue("new-hashed-password");
+
+        await resetPassword("azerty1234+", "xxxx.xxxx.xxxx");
+
+        expect(jwt.verify).toHaveBeenCalledTimes(1);
+        expect(authModels.findByEmail).toHaveBeenCalledWith("john@doe.fr");
+        expect(bcrypt.hash).toHaveBeenCalled();
+
+        expect(authModels.resetPassword).toHaveBeenCalledWith("john@doe.fr", "new-hashed-password");
+
+    });
+
 
 })
