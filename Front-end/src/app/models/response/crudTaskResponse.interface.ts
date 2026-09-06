@@ -4,8 +4,11 @@ export interface AddTaskResponseInterface {
 
 export interface Task {
   id: number;
-  description: string;
+  titleTask: string;
+  description: string | null;
   is_done: boolean;
+  priority: string;
+  dueDate: string | null;
 }
 
 export interface GetAllTaskResponseInterface {

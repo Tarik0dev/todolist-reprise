@@ -1,28 +1,17 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AddTaskRequestInterface } from '../models/request/crudTaskRequest.interface';
 import { CrudTaskService } from '../services/crud-task.service';
 import { AddTaskResponseInterface, Task } from '../models/response/crudTaskResponse.interface';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { HlmDialogImports } from '@spartan-ng/helm/dialog';
 import { DatePipe, SlicePipe, TitleCasePipe } from '@angular/common';
 import { toast } from 'ngx-sonner';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
-
+import { AddTask } from '../add-task/add-task';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    ...HlmButtonImports,
-    ...HlmDialogImports,
-    DatePipe,
-    TitleCasePipe,
-    SlicePipe,
-    ...HlmBadgeImports,
-  ],
+  imports: [ReactiveFormsModule, DatePipe, TitleCasePipe, SlicePipe, ...HlmBadgeImports, AddTask],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -33,6 +22,10 @@ export class Dashboard implements OnInit {
   ongoingTasks = signal<number>(0);
   completedTasks = signal<number>(0);
   tasks = signal<Task[]>([]);
+  isAddTaskOpen = signal(false);
+
+
+
   ngOnInit(): void {
     this.getTasks();
     this.getUserInfo();
@@ -46,23 +39,17 @@ export class Dashboard implements OnInit {
   userFirstName = signal('');
   userLastName = signal('');
   userInitials = signal('');
+  userEmail = signal('');
 
   searchInput = new FormControl<string>('');
 
   today: number = Date.now();
 
-  priorities: {label: string, value: string}[ ] = [
-    { label: "Faible", value: "low"},
-    { label: "Moyenne", value: "medium"},
-    { label: "Urgente", value: "high"},
-  ]
+  toggleAddTaskModal(): void {
+    this.isAddTaskOpen.update((value) => !value);
+  }
 
-  createTaskForm = new FormGroup({
-    name : new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    priority : new FormControl('medium', [Validators.required, Validators.maxLength(100)])
-  })
   updateTaskInput = new FormControl('', [Validators.required, Validators.maxLength(100)]);
-
 
   getUserInfo() {
     const token = localStorage.getItem('token');
@@ -73,8 +60,10 @@ export class Dashboard implements OnInit {
 
       let userFirstName = decoded.firstName;
       let userLastName = decoded.lastName;
+      let userEmail = decoded.email;
       this.userFirstName.set(userFirstName);
       this.userLastName.set(userLastName);
+      this.userEmail.set(userEmail);
     }
   }
   signOut(): void {
@@ -82,8 +71,6 @@ export class Dashboard implements OnInit {
     this.router.navigate(['/']);
     toast.success('Vous vous êtes déconnecté');
   }
-
-
 
   getTasks() {
     let descriptionParams: string | undefined = undefined;
@@ -93,6 +80,7 @@ export class Dashboard implements OnInit {
     this.api.getTask(descriptionParams).subscribe({
       next: (response) => {
         this.tasks.set(response.result);
+        console.log(this.tasks());
         this.totalTasks.set(response.total);
         this.ongoingTasks.set(response.ongoing);
         this.completedTasks.set(response.completed);
@@ -143,29 +131,4 @@ export class Dashboard implements OnInit {
       },
     });
   }
-
-  onSubmitNewTask() {
-    console.log(this.createTaskForm.value)
-    if (this.createTaskForm.valid) {
-      const form = this.createTaskForm.value;
-
-      const taskData: AddTaskRequestInterface = {
-        description: form.name || '',
-        priority: form.priority || 'medium'
-      };
-
-      this.api.addTask(taskData).subscribe({
-        next: (response: AddTaskResponseInterface) => {
-          console.log('succès :', response.message);
-          this.createTaskForm.reset();
-          this.getTasks();
-        },
-        error: (error) => {
-          console.error('Erreur :', error);
-        },
-      });
-    }
-  }
 }
-
-

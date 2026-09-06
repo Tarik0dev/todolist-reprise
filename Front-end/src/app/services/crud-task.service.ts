@@ -17,10 +17,10 @@ export class CrudTaskService {
     return this.http.post<AddTaskResponseInterface>(this.apiUrl + '/task/add', task);
   }
 
-  getTask(description?: string): Observable<GetAllTaskResponseInterface> {
+  getTask(titleTask?: string): Observable<GetAllTaskResponseInterface> {
     let options: { [key: string]: string } = {};
-    if (description) {
-      options['description'] = description;
+    if (titleTask) {
+      options['titleTask'] = titleTask;
     }
     return this.http.get<GetAllTaskResponseInterface>(this.apiUrl + '/task/getAll', {
       params: options,

@@ -1,4 +1,6 @@
 export interface AddTaskRequestInterface {
-  description: string;
+  titleTask: string;
+  description: string | null;
   priority: string;
+  dueDate: string | null
 }
